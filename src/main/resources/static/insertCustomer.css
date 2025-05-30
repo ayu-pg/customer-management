@@ -1,0 +1,112 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  
+}
+
+.container {
+  max-width: 700px; /* Å© ÇøÇÂÇ¡Ç∆çLÇ∞ÇΩ */
+  padding: 10px;
+  margin: 0 auto;
+  width:700px;
+   
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+  padding: 10px; /* Å© ì¸óÕóìÇ…ó]îíÇí«â¡ */
+  font-size: 16px; /* Å© å©Ç‚Ç∑Ç≥ÉAÉbÉv */
+}
+
+input[type="submit"] {
+  padding: 12px;
+  font-size: 18px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.payment-options {
+  margin-top: 10px;
+}
+
+.payment-options label {
+  display: block;
+  margin-top: 5px;
+}
+
+/** ògîwåi*/
+.box{
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: #5989cf;
+    background: #c6e4ff;
+    border-bottom: solid 6px #aac5de;
+    border-radius: 9px;
+}
+
+/** åüçıÉ{É^Éì*/
+.search-button{
+  width: 30%;
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+input.search-button:hover {
+  background-color: rgb(0, 115, 230);
+  color: rgb(255, 255, 255);
+}
+
+
+/** ìoò^É{É^Éì*/
+.touroku-button{
+  width: 100%;
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+input.touroku-button:hover {
+  background-color: rgb(0, 115, 230);
+  color: rgb(255, 255, 255);
+}
