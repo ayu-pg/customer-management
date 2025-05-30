@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>顧客登録画面</title>
+	
+	<!-- その他CSSやフォント -->
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link rel="stylesheet" href="insertCustomer.css">
+	<link rel="stylesheet" href="insertCustomerHedder.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<script>
+		$(function () {
+
+			$("#searchClick").click(
+				function () {
+
+					var value = $('#postalCode').val();  // 住所じゃなくて郵便番号のinputの値をチェックしよう
+					if (!/^\d{7}$/.test(value)) {
+						alert('郵便番号は7桁の半角数字で入力してください。');
+						return;
+					}
+
+					// 1.$.ajaxメソッドで通信を行います。
+					$.ajax({
+						url: 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + $("#postalCode").val(), // 通信先のURL
+						type: "GET",		// 使用するHTTPメソッド
+						timespan: 1000 		// 通信のタイムアウトの設定(ミリ秒)
+
+						// 2. doneは、通信に成功した時に実行される
+					}).done(function (response, textStatus, jqXHR) {
+
+						var JsonRespons = JSON.parse(response);
+						console.log(JsonRespons); //コンソールにJSONが表示される
+
+						$("#address").val(
+							JsonRespons.results[0].address1 +
+							JsonRespons.results[0].address2 +
+							JsonRespons.results[0].address3
+						);
+						// 3. failは、通信に失敗した時に実行される
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						const errorMsg = `ステータス: ${jqXHR.status}, テキスト: ${textStatus}, エラー: ${errorThrown}`;
+						$("#address").val(errorMsg);
+
+
+						// 4. alwaysは、成功/失敗に関わらず実行される
+					}).always(function () {
+						$("#span6").text("complete");
+
+					});
+
+				});
+
+
+			$(function () {
+				$('#tourokuClick').click(function (e) {
+					// エラーをまとめて表示したいならここでクリア
+					$('.error-message').remove();
+
+					let hasError = false;
+
+					const companyName = $('#companyName').val().trim();
+					const postalCode = $('#postalCode').val().trim();
+					const address = $('#address').val().trim();
+					const phoneNumber = $('#phoneNumber').val().trim();
+					const paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+					// 会社名チェック
+					if (companyName === "") {
+						alert('会社名を入力してください。');
+						hasError = true;
+					}
+
+					// 郵便番号チェック（7桁数字）
+					if (!/^\d{7}$/.test(postalCode)) {
+						alert('郵便番号は7桁の半角数字で入力してください。');
+						hasError = true;
+					}
+
+					// 住所チェック
+					if (address === "") {
+						alert('住所を入力してください。');
+						hasError = true;
+					}
+
+					// 支払方法チェック
+					if (!paymentMethod) {
+						alert('支払方法を選択してください。');
+						hasError = true;
+					}
+
+					// エラーがあったら送信キャンセル
+					if (hasError) {
+						e.preventDefault();
+					}
+				});
+			});
+		});
+	</script>
+
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="header-content">
+			<div class="user-greeting">
+				ようこそ、<span th:text="${session.user.name}"></span>さん
+			</div>
+			<div class="menuback-button">
+				<a href="/menuback" class="menuback">メニューへ戻る</a>
+			</div>
+			<div class="logout-button">
+				<a href="/logout" class="logout">ログアウト</a>
+			</div>
+		</div>
+	</header>
+
+	<!-- 登録完了メッセージ -->
+	<div th:if="${successMessage}"
+		style="margin: 10px auto; padding: 10px 0; color: #007bff; text-align: center; font-weight: bold;">
+		<p th:text="${successMessage}" style="margin: 0;"></p>
+	</div>
+
+
+
+	<div class="container">
+		<h1>顧客登録画面</h1>
+
+		<div class="box">
+			<form action="/customer/register" method="post">
+				<label for="companyName">会社名</label>
+				<input type="text" id="companyName" name="companyName" maxlength="100" required>
+
+				<label for="postalCode">郵便番号</label>
+				<input type="text" id="postalCode" name="postalCode" placeholder="" maxlength="7" required>
+
+				<div class="search-button-container">
+					<input type="button" id="searchClick" class="search-button" value="検索">
+				</div>
+				<label for="address">住所</label>
+				<input type="text" id="address" name="address" placeholder="" maxlength="100" required>
+
+				<label for="phoneNumber">電話番号</label>
+				<input type="text" id="phoneNumber" name="phoneNumber" placeholder="" maxlength="20" required>
+
+				<label for="faxNumber">FAX</label>
+				<input type="text" id="faxNumber" name="faxNumber" maxlength="20">
+
+				<label for="closingDay">締め日</label>
+				<select id="closingDay" name="closingDay">
+					<option value="1">10日</option>
+					<option value="2">15日</option>
+					<option value="3">20日</option>
+					<option value="4">25日</option>
+					<option value="5">末締め</option>
+				</select>
+
+				<label for="paymentDay">支払日</label>
+				<input type="date" id="paymentDay" name="paymentDay">
+
+
+
+				<label>支払方法</label>
+				<div class="payment-options">
+					<label><input type="radio" id="paymentMethod" name="paymentMethod" value="1" required>振込</label>
+					<label><input type="radio" id="paymentMethod" name="paymentMethod" value="2" required> 現金</label>
+					<label><input type="radio" id="paymentMethod" name="paymentMethod" value="3" required> 代引き</label>
+				</div>
+				<input type="submit" id="tourokuClick" class="touroku-button" value="登録">
+			</form>
+
+		</div>
+	</div>
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>&copy; 2025 Example Corp. All rights reserved.</p>
+		</div>
+	</footer>
+
+
+</body>
+
+<script>
+
+</script>
+
+</html>

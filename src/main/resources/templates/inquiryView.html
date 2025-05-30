@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="demo.css">
+	<title>Rabbit</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		$(function () {
+
+			$("#SeachClick").click(
+				function () {
+
+					// 郵便番号nullチェック
+					if ($('#address').val() == '') {
+						alert('郵便番号が入力されていません。');
+						return;
+					}
+
+					// 郵便番号数値チェック
+					var value = $('#address').val();
+					if (!$.isNumeric(value)) {
+						alert('郵便番号が半角数値ではありません。');
+						return;
+					}
+
+
+					// 1.$.ajaxメソッドで通信を行います。
+					$.ajax({
+						url: 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + $("#address").val(), // 通信先のURL
+						type: "GET",		// 使用するHTTPメソッド
+						timespan: 1000 		// 通信のタイムアウトの設定(ミリ秒)
+
+						// 2. doneは、通信に成功した時に実行される
+					}).done(function (response, textStatus, jqXHR) {
+
+						var JsonRespons = JSON.parse(response);
+						console.log(JsonRespons); //コンソールにJSONが表示される
+
+						$("#prefectures").val(JsonRespons.results[0].address1);
+						$("#municipalities").val(JsonRespons.results[0].address2);
+						$("#townarea").val(JsonRespons.results[0].address3);
+
+						// 3. failは、通信に失敗した時に実行される
+					}).fail(function (jqXHR, textStatus, errorThrown) {
+						$("#prefectures").val(jqXHR.status); //例：404
+						$("#municipalities").text(textStatus); //例：error
+						$("#townarea").text(errorThrown); //例：NOT FOUND
+
+						// 4. alwaysは、成功/失敗に関わらず実行される
+					}).always(function () {
+						$("#span6").text("complete");
+
+					});
+
+				});
+		});
+	</script>
+</head>
+
+<body>
+	<!-- Header Start -->
+	<header class="site-header">
+		<div class="wrapper site-header__wrapper">
+			<font size="5" color="#FFFFFF" style="text-align:center"></font>
+		</div>
+	</header>
+	<!-- Header End -->
+
+	<!--Footer Start-->
+	<footer>
+		<div class="copyright">
+			<p>ﾂｩ 2021 - systemRabbit</p>
+		</div>
+		<div class="sns">
+			<a href="#" class="contact">Contact</a>
+			<a href="#" class="fb"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></a>
+			<a href="#" class="tw"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></a>
+			<a href="#" class="insta"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></a>
+		</div>
+	</footer>
+	<!--Footer End-->
+
+	<br>
+
+	<div style="position: relative; top: 10px; left:800px; ">
+		<label for="name1">お問い合わせフォーム</label>
+	</div>
+
+	<!--textbox Start-->
+	<div style="width:100%;">
+		<div class="cp_iptxt">
+			<input class="ef" type="text" placeholder="" id="address" required>
+			<label>〒郵便番号</label>
+			<span style="color:red;">※</span></label>
+			<span class="focus_line"></span>
+		</div>
+	</div>
+
+	<!--Button Start-->
+	<div style="position: relative; top: 10px; left:800px; " />
+	<a href="#" class="btn btn--orange" id="SeachClick">検索</a>
+	</div>
+	<!--Button End-->
+
+	<div style="width:100%;">
+		<div class="cp_iptxt">
+			<input class="ef" type="text" placeholder="" id="prefectures">
+			<label>都道府県</label>
+			<span class="focus_line"></span>
+		</div>
+	</div>
+
+	<div style="width:100%;">
+		<div class="cp_iptxt">
+			<input class="ef" type="text" placeholder="" id="municipalities">
+			<label>市区町村</label>
+			<span class="focus_line"></span>
+		</div>
+	</div>
+
+	<div style="width:100%;">
+		<div class="cp_iptxt">
+			<input class="ef" type="text" placeholder="" id="townarea">
+			<label>町域名</label>
+			<span class="focus_line"></span>
+		</div>
+	</div>
+
+	<div style="width:100%;">
+		<div class="cp_iptxt">
+			<input class="ef" type="text" placeholder="">
+			<label>お名前</label>
+			<span class="focus_line"></span>
+		</div>
+
+		<div style="width:100%;">
+			<div class="cp_iptxt">
+				<input class="ef" type="text" placeholder="">
+				<label>メールアドレス</label>
+				<span class="focus_line"></span>
+			</div>
+		</div>
+		<!--textboxEnd-->
+
+		<br>
+		<div style="position: relative; top: 10px; left:800px; ">
+			<label for="name1">お問い合わせ内容</label>
+		</div>
+		<br>
+
+		<!--textarea Start-->
+		<textarea name="name" class="m-form-textarea"></textarea>
+		<!--textarea End-->
+
+		<!--Button Start-->
+		<div style="position: relative; top: 10px; left:800px; " />
+		<a href="" class="btn btn--orange" id="SendClick">送信</a>
+	</div>
+	<!--Button End-->
+
+</body>
+
+</html>
