@@ -1,0 +1,141 @@
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+header {
+  background-color: #0066cc;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+main {
+  padding: 2rem;
+}
+
+table {
+  table-layout: fixed;  /* これで列幅固定 */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+   white-space: normal; /* ← これで折り返し有効 */
+}
+
+th {
+  background-color: rgb(104, 180, 255);
+  font-weight: bold;
+  text-align: center;
+}
+
+.edit {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit:hover {
+  background-color: rgb(0, 132, 66);
+}
+
+.delete:hover {
+  background-color: rgb(153, 0, 0);
+}
+
+/* 検索ボックスのデザイン */
+.search-form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .search-form label {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .search-form input[type="text"] {
+      padding: 0.5rem;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .search-form button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .search-form button:hover {
+      background-color: #0055aa;
+   }
+   
+   
+
+
+/** ページング*/
+.pagination {
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination a {
+  color: #0066cc;
+  padding: 8px 12px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-weight: bold;
+  background-color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination a.active {
+  background-color: #0066cc;
+  color: white;
+  border-color: #0066cc;
+}
+
+/** ページ件数*/
+.pagination-info {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+}

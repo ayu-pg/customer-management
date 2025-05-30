@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>顧客一覧画面</title>
+
+	<!-- Tailwind CSS 読み込み -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- その他CSSやフォント -->
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="customerList.css">
+	<link rel="stylesheet" href="customeListHedder.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+
+	</script>
+
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="header-content">
+			<div class="user-greeting">
+				ようこそ、<span th:text="${session.user.name}"></span>さん
+			</div>
+			<div class="menuback-button">
+				<a href="/menuback" class="menuback">メニューへ戻る</a>
+			</div>
+			<div class="logout-button">
+				<a href="/logout" class="logout">ログアウト</a>
+			</div>
+		</div>
+	</header>
+
+
+
+
+
+
+
+	<main>
+
+
+		<h1>顧客検索</h1>
+		<div class="search-wrapper">
+			<form class="search-form" action="/search" method="get">
+				<label for="search">会社名：</label>
+				<input type="text" id="search" name="search" placeholder="会社名を入力して下さい" />
+				<button type="submit">検索</button>
+			</form>
+		</div>
+
+		<h1>顧客一覧</h1>
+		<p class="pagination-info">
+			全<span th:text="${totalCount}">0</span>件中
+			<span th:text="${start}">0</span>〜<span th:text="${end}">0</span>件を表示中
+		</p>
+
+
+		<table>
+			<colgroup>
+				<col style="width: 200px;"> <!-- 会社名 -->
+				<col style="width: 100px;"> <!-- 郵便番号 -->
+				<col style="width: 300px;"> <!-- 住所 -->
+				<col style="width: 120px;"> <!--　電話番号 -->
+				<col style="width: 120px;"> <!-- FAX -->
+				<col style="width: 100px;"> <!-- 締め日 -->
+				<col style="width: 130px;"> <!-- 支払日 -->
+				<col style="width: 100px;"> <!-- 振込方法 -->
+				<col style="width: 100px;"> <!-- 操作：編集 -->
+				<col style="width: 100px;"> <!-- 操作：削除 -->
+				<!-- 以下同じように -->
+			</colgroup>
+			<thead>
+				<tr>
+					<th>会社名</th>
+					<th>郵便番号</th>
+					<th>住所</th>
+					<th>電話番号</th>
+					<th>FAX</th>
+					<th>締め日</th>
+					<th>支払日</th>
+					<th>支払方法</th>
+					<th colspan="2">操作</th> <!-- 編集と削除を結合して「操作」に -->
+					<!--<th>編集</th>
+					<th>削除</th>-->
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 仮のデータ -->
+				<tr th:each="customer : ${customerList}">
+					<td th:text="${customer.companyName}">会社名</td>
+					<td th:text="${customer.postalCode}">郵便番号</td>
+					<td th:text="${customer.address}">住所</td>
+					<td th:text="${customer.phoneNumber}">電話番号</td>
+					<td th:text="${customer.faxNumber}">FAX</td>
+					<td th:text="${customer.closingDayEntity.name}">締め日</td>
+					<td th:text="${customer.paymentDay}">支払日</td>
+					<!--<td th:text="${customer.paymentMethod}">支払方法</td>-->
+					<td th:text="${customer.paymentMethodsEntity.name}">支払方法</td>
+					<td><button class="edit">編集</button></td>
+					<td><button class="delete">削除</button></td>
+				</tr>
+				
+
+			</tbody>
+		</table>
+
+
+		<div class="pagination">
+			<a href="#">&laquo; 前へ</a>
+			<a href="#" class="active">1</a>
+			<a href="#">2</a>
+			<a href="#">3</a>
+			<a href="#">次へ &raquo;</a>
+		</div>
+
+
+
+	</main>
+
+
+
+
+
+
+
+
+
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>&copy; 2025 Example Corp. All rights reserved.</p>
+		</div>
+	</footer>
+
+
+</body>
+
+<script>
+
+</script>
+
+</html>
