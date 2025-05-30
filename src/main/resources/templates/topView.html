@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="topHedder.css">
+	<link rel="stylesheet" href="top.css">
+	<title>トップ画面</title>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="header-content">
+			<div class="user-greeting">
+				ようこそ、<span th:text="${session.user.name}"></span>さん
+			</div>
+			<div class="logout-button">
+				<a href="/logout" class="logout">ログアウト</a>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<div class="menu-area">
+			<h2 style="font-size: 24px; font-weight: bold;">
+				<i class="fas fa-tools"></i> 管理メニュー
+			</h2>
+			<div class="buttons">
+				<a href="/insertCustomerView" class="menu-btn">
+					<i class="fas fa-user-plus"></i> 顧客登録
+				</a>
+				<a href="/customerListView" class="menu-btn">
+					<i class="fas fa-users"></i> 顧客一覧
+				</a>
+				<a href="/notices" class="menu-btn">
+					<i class="fas fa-clock"></i> 勤怠管理
+				</a>
+				<a href="/profile" class="menu-btn">
+					<i class="fas fa-plane-departure"></i> 休暇申請
+				</a>
+			</div>
+
+
+	</main>
+
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>&copy; 2025 Example Corp. All rights reserved.</p>
+		</div>
+	</footer>
+</body>
+
+<script>
+
+</script>
+
+</html>
