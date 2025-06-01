@@ -16,6 +16,10 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 @Controller
 public class DemoController {
 
@@ -129,17 +133,19 @@ public class DemoController {
 	 */
 	@GetMapping("/customerListView")
 	public String listUserClick(HttpSession session, Model model,
-			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder) {
+			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder,
+			@RequestParam(name = "page", defaultValue = "0") int page) {
 
 		// 顧客情報一覧リストを取得
 		List<CustomerEntity> customerList = customerService.getAllCustomers();
 
-		// 会社名の昇順、降順のソートを設定
-		if ("desc".equalsIgnoreCase(sortOrder)) {
-			customerList = customerService.getCustomersSortedByCompanyNameDesc();
-		} else {
-			customerList = customerService.getCustomersSortedByCompanyNameAsc();
-		}
+		// ページングと会社名の昇順、降順ソートを同時に設定して取得
+		Pageable pageable = PageRequest.of(page, 10);
+		Page<CustomerEntity> customerPage = customerService.getCustomersPage(pageable, sortOrder);
+
+		model.addAttribute("customerPage", customerPage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("sortOrder", sortOrder); // 今のソート状態も渡すと便利
 
 		// モデルに渡す（Thymeleafで使うため）
 		model.addAttribute("customerList", customerList);

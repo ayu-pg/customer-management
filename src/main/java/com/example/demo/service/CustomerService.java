@@ -3,11 +3,12 @@ package com.example.demo.service;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.repository.CustomerRepository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
 
 /**
  * 顧客情報サービスクラス
@@ -40,23 +41,30 @@ public class CustomerService {
 		return customerRepository.findAll();
 	}
 
-	//
 	/**
-	 * 会社名の昇順ソート処理
+	 * ページング処理
 	 * 
+	 * @param pageable
 	 * @return
 	 */
-	public List<CustomerEntity> getCustomersSortedByCompanyNameAsc() {
-		return customerRepository.findAll(Sort.by(Sort.Direction.ASC, "companyName"));
+
+	public Page<CustomerEntity> getCustomersPage(Pageable pageable) {
+		return customerRepository.findAll(pageable);
 	}
 
 	/**
-	 * 会社名の降順ソート処理
+	 * 会社名の昇順：降順ソート＋ページングを処理
 	 * 
+	 * @param pageable
+	 * @param sortOrder
 	 * @return
 	 */
-	public List<CustomerEntity> getCustomersSortedByCompanyNameDesc() {
-		return customerRepository.findAll(Sort.by(Sort.Direction.DESC, "companyName"));
+	public Page<CustomerEntity> getCustomersPage(Pageable pageable, String sortOrder) {
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			return customerRepository.findAllByOrderByCompanyNameDesc(pageable);
+		} else {
+			return customerRepository.findAllByOrderByCompanyNameAsc(pageable);
+		}
 	}
 
 }
