@@ -9,6 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Sort;
 
 /**
  * 顧客情報サービスクラス
@@ -65,6 +68,22 @@ public class CustomerService {
 		} else {
 			return customerRepository.findAllByOrderByCompanyNameAsc(pageable);
 		}
+	}
+	/**
+	 * 会社名検索処理（部分一致）
+	 * @param keyword
+	 * @param pageable
+	 * @param sortOrder
+	 * @return
+	 */
+	public Page<CustomerEntity> searchCustomersByCompanyName(String keyword, Pageable pageable, String sortOrder) {
+	    if ("desc".equalsIgnoreCase(sortOrder)) {
+	        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("companyName").descending());
+	    } else {
+	        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("companyName").ascending());
+	    }
+
+	    return customerRepository.findByCompanyNameContaining(keyword, pageable);
 	}
 
 }

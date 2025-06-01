@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,21 +132,25 @@ public class DemoController {
 	@GetMapping("/customerListView")
 	public String listUserClick(HttpSession session, Model model,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder,
-			@RequestParam(name = "page", defaultValue = "0") int page) {
-
-		// 顧客情報一覧リストを取得
-		List<CustomerEntity> customerList = customerService.getAllCustomers();
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "keyword", required = false) String keyword) {
 
 		// ページングと会社名の昇順、降順ソートを同時に設定して取得
 		Pageable pageable = PageRequest.of(page, 10);
 		Page<CustomerEntity> customerPage = customerService.getCustomersPage(pageable, sortOrder);
 
-		model.addAttribute("customerPage", customerPage);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("sortOrder", sortOrder); // 今のソート状態も渡すと便利
+		// 会社名検索部分一致
+		if (keyword != null && !keyword.isEmpty()) {
+			customerPage = customerService.searchCustomersByCompanyName(keyword, pageable, sortOrder);
+			model.addAttribute("keyword", keyword); // 入力欄に値を保持する用
+		} else {
+			customerPage = customerService.getCustomersPage(pageable, sortOrder);
+		}
 
 		// モデルに渡す（Thymeleafで使うため）
-		model.addAttribute("customerList", customerList);
+		model.addAttribute("customerPage", customerPage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("sortOrder", sortOrder);
 
 		// 顧客一覧画面に遷移
 		return "customerListView";

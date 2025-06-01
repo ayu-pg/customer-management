@@ -17,13 +17,14 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
 
 	// 会社名のソート順
 	List<CustomerEntity> findAllByOrderByCompanyNameAsc();
-
 	List<CustomerEntity> findAllByOrderByCompanyNameDesc();
 
 	// ページング処理
 	// ページング＋ソート処理
 	Page<CustomerEntity> findAllByOrderByCompanyNameAsc(Pageable pageable);
-
 	Page<CustomerEntity> findAllByOrderByCompanyNameDesc(Pageable pageable);
+
+	// 会社名に指定した文字列が部分一致する顧客情報を取得（ページング対応）
+	Page<CustomerEntity> findByCompanyNameContaining(String companyName, Pageable pageable);
 
 }

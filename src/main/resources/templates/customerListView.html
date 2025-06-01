@@ -45,10 +45,11 @@
 
 
 		<h1>顧客検索</h1>
+
 		<div class="search-wrapper">
-			<form class="search-form" action="/search" method="get">
+			<form class="search-form" th:action="@{/customerListView}" method="get">
 				<label for="search">会社名：</label>
-				<input type="text" id="search" name="search" placeholder="会社名を入力して下さい" />
+				<input type="text" id="search" name="keyword" placeholder="会社名を入力して下さい" th:value="${keyword}" />
 				<button type="submit">検索</button>
 			</form>
 		</div>
@@ -109,16 +110,16 @@
 
 		<div class="pagination">
 			<!-- 前のページへのリンク -->
-			<a th:href="@{/customerListView(page=${customerPage.number - 1}, sort=${sortOrder})}"
+			<a th:href="@{/customerListView(page=${customerPage.number - 1}, sort=${sortOrder}, keyword=${keyword})}"
 				th:classappend="${customerPage.first} ? 'disabled'" th:text="'« 前へ'"></a>
 			<!-- ページ番号のリンクをループで作成 -->
 			<span th:each="pageNum : ${#numbers.sequence(0, customerPage.totalPages - 1)}">
-    		<a th:href="@{/customerListView(page=${pageNum}, sort=${sortOrder})}"
+    		<a th:href="@{/customerListView(page=${pageNum}, sort=${sortOrder}, keyword=${keyword})}"
       			 th:text="${pageNum + 1}"
        				th:classappend="${pageNum == customerPage.number} ? 'active'"></a>
   			</span>
  			<!-- 次のページへのリンク -->
-  			<a th:href="@{/customerListView(page=${customerPage.number + 1}, sort=${sortOrder})}"
+  			<a th:href="@{/customerListView(page=${customerPage.number + 1}, sort=${sortOrder}, keyword=${keyword})}"
   			  th:classappend="${customerPage.last} ? 'disabled'"
   				  th:text="'次へ »'"></a>
 		</div>
