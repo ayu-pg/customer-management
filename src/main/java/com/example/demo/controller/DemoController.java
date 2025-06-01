@@ -128,10 +128,18 @@ public class DemoController {
 	 * @return
 	 */
 	@GetMapping("/customerListView")
-	public String listUserClick(HttpSession session, Model model) {
+	public String listUserClick(HttpSession session, Model model,
+			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder) {
 
 		// 顧客情報一覧リストを取得
 		List<CustomerEntity> customerList = customerService.getAllCustomers();
+
+		// 会社名の昇順、降順のソートを設定
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			customerList = customerService.getCustomersSortedByCompanyNameDesc();
+		} else {
+			customerList = customerService.getCustomersSortedByCompanyNameAsc();
+		}
 
 		// モデルに渡す（Thymeleafで使うため）
 		model.addAttribute("customerList", customerList);

@@ -139,3 +139,9 @@ th {
   font-size: 14px;
   color: #444;
 }
+
+/** ソート順アイコン*/
+.sort-icon {
+	text-decoration: none;
+	font-size: 1.2em;
+}

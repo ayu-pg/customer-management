@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 /**
- * 顧客情報登録サービスクラス
+ * 顧客情報サービスクラス
  * <p>
  * 
  */
@@ -38,4 +39,24 @@ public class CustomerService {
 	public List<CustomerEntity> getAllCustomers() {
 		return customerRepository.findAll();
 	}
+
+	//
+	/**
+	 * 会社名の昇順ソート処理
+	 * 
+	 * @return
+	 */
+	public List<CustomerEntity> getCustomersSortedByCompanyNameAsc() {
+		return customerRepository.findAll(Sort.by(Sort.Direction.ASC, "companyName"));
+	}
+
+	/**
+	 * 会社名の降順ソート処理
+	 * 
+	 * @return
+	 */
+	public List<CustomerEntity> getCustomersSortedByCompanyNameDesc() {
+		return customerRepository.findAll(Sort.by(Sort.Direction.DESC, "companyName"));
+	}
+
 }
