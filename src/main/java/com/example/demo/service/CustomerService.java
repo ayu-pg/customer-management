@@ -69,21 +69,34 @@ public class CustomerService {
 			return customerRepository.findAllByOrderByCompanyNameAsc(pageable);
 		}
 	}
+
 	/**
 	 * ‰ïĞ–¼ŒŸõˆ—i•”•ªˆê’vj
+	 * 
 	 * @param keyword
 	 * @param pageable
 	 * @param sortOrder
 	 * @return
 	 */
 	public Page<CustomerEntity> searchCustomersByCompanyName(String keyword, Pageable pageable, String sortOrder) {
-	    if ("desc".equalsIgnoreCase(sortOrder)) {
-	        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("companyName").descending());
-	    } else {
-	        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("companyName").ascending());
-	    }
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("companyName").descending());
+		} else {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("companyName").ascending());
+		}
 
-	    return customerRepository.findByCompanyNameContaining(keyword, pageable);
+		return customerRepository.findByCompanyNameContaining(keyword, pageable);
+	}
+
+	/**
+	 * ŒÚ‹qˆê——íœˆ—
+	 * 
+	 * @param id
+	 */
+	public void deleteCustomerById(Long id) {
+		customerRepository.deleteById(id);
 	}
 
 }

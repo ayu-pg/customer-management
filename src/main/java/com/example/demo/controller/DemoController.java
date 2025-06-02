@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.UserEntity;
@@ -139,7 +140,7 @@ public class DemoController {
 		Pageable pageable = PageRequest.of(page, 10);
 		Page<CustomerEntity> customerPage = customerService.getCustomersPage(pageable, sortOrder);
 
-		// 会社名検索部分一致
+		// 会社名検索処理（部分一致）
 		if (keyword != null && !keyword.isEmpty()) {
 			customerPage = customerService.searchCustomersByCompanyName(keyword, pageable, sortOrder);
 			model.addAttribute("keyword", keyword); // 入力欄に値を保持する用
@@ -154,6 +155,21 @@ public class DemoController {
 
 		// 顧客一覧画面に遷移
 		return "customerListView";
+	}
+
+	/**
+	 * 「メニュー：顧客一覧」 削除ボタン押下処理
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/deleteCustomer")
+	public String deleteCustomer(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+		customerService.deleteCustomerById(id);
+
+		// 削除完了メッセージをフラッシュ属性にセット
+		redirectAttributes.addFlashAttribute("deleteMessage", "顧客情報の削除が完了しました。");
+		return "redirect:/customerListView";
 	}
 
 }

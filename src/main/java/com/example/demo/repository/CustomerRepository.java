@@ -13,7 +13,8 @@ import org.springframework.data.domain.Pageable;
  * 顧客情報リポジトリー クラス customersテーブルに対応しています
  */
 @Repository
-public interface CustomerRepository extends JpaRepository<CustomerEntity, Integer> {
+public interface CustomerRepository extends JpaRepository<CustomerEntity, Long>
+{
 
 	// 会社名のソート順
 	List<CustomerEntity> findAllByOrderByCompanyNameAsc();
@@ -26,5 +27,8 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
 
 	// 会社名に指定した文字列が部分一致する顧客情報を取得（ページング対応）
 	Page<CustomerEntity> findByCompanyNameContaining(String companyName, Pageable pageable);
+	
+	
 
 }
+
