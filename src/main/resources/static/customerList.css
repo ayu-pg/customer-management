@@ -48,9 +48,12 @@ th {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+   padding: 0.4rem 0.9rem;  /* 少し小さめに */
+  font-size: 0.88rem;      /* 小さめの文字サイズ */
   border-radius: 5px;
   cursor: pointer;
+  text-decoration: none; /* aタグ用：下線を消す */
+  text-align: center;     /* aタグ用：テキスト中央揃え */
 }
 
 .delete {

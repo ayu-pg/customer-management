@@ -5,6 +5,7 @@ import com.example.demo.repository.CustomerRepository;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,6 +98,15 @@ public class CustomerService {
 	 */
 	public void deleteCustomerById(Long id) {
 		customerRepository.deleteById(id);
+	}
+	
+	/**
+	 *  ŒÚ‹qˆê——•ÒW‘JˆÚˆ—
+	 * @param id
+	 * @return
+	 */
+	public Optional<CustomerEntity> findById(Long id) {
+	    return customerRepository.findById(id);
 	}
 
 }

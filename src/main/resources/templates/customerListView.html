@@ -40,13 +40,16 @@
 
 
 	<main>
-
 		<!-- 削除完了メッセージ -->
 		<div th:if="${deleteMessage}"
 			style="margin: 10px auto; padding: 10px 0; color: rgb(255, 0, 0); text-align: center; font-weight: bold;">
 			<p th:text="${deleteMessage}" style="margin: 0;"></p>
 		</div>
-
+		<!-- 更新完了メッセージ -->
+		<div th:if="${successMessage}"
+			style="margin: 10px auto; padding: 10px 0; color: #007bff; text-align: center; font-weight: bold;">
+			<p th:text="${successMessage}" style="margin: 0;"></p>
+		</div>
 
 		<h1>顧客検索</h1>
 
@@ -105,7 +108,9 @@
 					<td th:text="${customer.closingDayEntity.name}">締め日</td>
 					<td th:text="${customer.paymentDay}">支払日</td>
 					<td th:text="${customer.paymentMethodsEntity.name}">支払方法</td>
-					<td><button class="edit">編集</button></td>
+					<td>
+						<a th:href="@{/editCustomerView(id=${customer.id})}" class="edit">編集</a>
+					</td>
 					<form th:action="@{/deleteCustomer}" method="post" th:object="${customer}">
 						<input type="hidden" th:name="id" th:value="${customer.id}" />
 						<td><button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
