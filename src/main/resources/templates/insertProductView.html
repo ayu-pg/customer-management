@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>商品登録画面</title>
+	<!-- その他CSSやフォント -->
+	<link rel="stylesheet" href="css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link rel="stylesheet" href="insertCustomer.css">
+	<link rel="stylesheet" href="insertCustomerHedder.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+
+	</script>
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="header-content">
+			<div class="user-greeting">
+				ようこそ、<span th:text="${session.user.name}"></span>さん
+			</div>
+			<div class="menuback-button">
+				<a href="/menuback" class="menuback">メニューへ戻る</a>
+			</div>
+			<div class="logout-button">
+				<a href="/logout" class="logout">ログアウト</a>
+			</div>
+		</div>
+	</header>
+
+	<!-- 登録完了メッセージ -->
+	<div th:if="${successMessage}"
+		style="margin: 10px auto; padding: 10px 0; color: #007bff; text-align: center; font-weight: bold;">
+		<p th:text="${successMessage}" style="margin: 0;"></p>
+	</div>
+
+	<main>
+
+		<div class="container">
+			<h1>商品登録画面</h1>
+
+			<div class="box">
+				<form action="/product/register" method="post">
+
+					<label for="productName">商品名</label>
+					<input type="text" id="productName" name="productName" maxlength="100" 　required>
+
+					<div>
+						<label for="regularPrice">通常価格</label>
+						<input type="text" id="regularPrice" name="regularPrice" placeholder="" maxlength="" required>
+					</div>
+
+					<label for="size">サイズ</label>
+					<select id="size" name="size">
+						<option value="0"> </option>
+						<option value="1">S</option>
+						<option value="2">M</option>
+						<option value="3">L</option>
+						<option value="4">LL</option>
+						<option value="5">3L</option>
+						<option value="6">4L</option>
+						<option value="7">F</option>
+						<option value="8">通常LL</option>
+						<option value="9">幅広LL</option>
+						<option value="10">幅広3L</option>
+						<option value="11">幅広4L</option>
+					</select>
+
+					<div>
+						<input type="submit" id="tourokuClick" class="touroku-button" value="登録">
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</main>
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>&copy; 2025 Example Corp. All rights reserved.</p>
+		</div>
+	</footer>
+
+
+</body>
+
+<script>
+
+</script>
+
+</html>
