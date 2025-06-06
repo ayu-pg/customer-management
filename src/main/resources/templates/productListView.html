@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>商品一覧画面</title>
+
+	<!-- Tailwind CSS 読み込み -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- その他CSSやフォント -->
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="customerList.css">
+	<link rel="stylesheet" href="customeListHedder.css">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+
+	</script>
+
+</head>
+
+<body>
+
+	<header class="site-header">
+		<div class="header-content">
+			<div class="user-greeting">
+				ようこそ、<span th:text="${session.user.name}"></span>さん
+			</div>
+			<div class="menuback-button">
+				<a href="/menuback" class="menuback">メニューへ戻る</a>
+			</div>
+			<div class="logout-button">
+				<a href="/logout" class="logout">ログアウト</a>
+			</div>
+		</div>
+	</header>
+
+
+	<main>
+
+
+		<h1>商品検索</h1>
+
+		<div class="search-wrapper">
+			<form class="search-form" th:action="@{/productListView}" method="get">
+				<label for="search">商品名：</label>
+				<input type="text" id="search" name="keyword" placeholder="商品名を入力して下さい" th:value="${keyword}" />
+				<button type="submit">検索</button>
+			</form>
+		</div>
+
+		<br>
+
+		<h1>商品一覧</h1>
+
+		<p class="pagination-info">
+			全<span th:text="${productsPage.totalElements}">0</span>件中
+			<span th:text="${productsPage.number * productsPage.size + 1}">0</span>〜
+			<span th:text="${productsPage.number * productsPage.size + productsPage.numberOfElements}">0</span>件を表示中
+		</p>
+
+		<table>
+			<colgroup>
+				<col style="width: 150px;"> <!-- 商品名 -->
+				<col style="width: 100px;"> <!-- サイズ -->
+				<col style="width: 150px;"> <!-- 通常価格 -->
+				<col style="width: 50px;"> <!-- 操作：編集 -->
+				<col style="width: 50px;"> <!-- 操作：削除 -->
+			</colgroup>
+			<thead>
+				<tr>
+					<th>商品名
+						<a th:href="@{/productListView(page=0, sort='asc')}" class="sort-icon">&#x1F53C;</a>
+						<a th:href="@{/productListView(page=0, sort='desc')}" class="sort-icon">&#x1F53D;</a>
+					</th>
+					<th>サイズ</th>
+					<th>通常価格</th>
+					<th colspan="2">操作</th> <!-- 編集と削除を結合して「操作」に -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${productsPage}">
+					<td th:text="${product.productName}">商品名</td>
+					<td th:text="${product.ProductSizeEntity.name}">サイズ</td>
+					<td th:text="${product.regularPrice}">通常価格</td>
+					<td>
+						<a th:href="@{/productEditView(productId=${product.id})}" class="edit">編集</a>
+					</td>
+					<td>
+						<button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			<!-- 前のページへのリンク -->
+			<a th:href="@{/productListView(page=${productsPage.number > 0 ? productsPage.number - 1 : 0}, sort=${sortOrder})}"
+				th:classappend="${productsPage.first} ? ' disabled'" th:text="'« 前へ'"></a>
+			<!-- ページ番号のリンク -->
+			<span th:each="pageNum : ${#numbers.sequence(0, productsPage.totalPages - 1)}">
+		    <a th:href="@{/productListView(page=${pageNum}, sort=${sortOrder})}"
+		       th:text="${pageNum + 1}"
+		       th:classappend="${pageNum == productsPage.number} ? ' active'"></a>
+  			</span>
+
+		<!-- 次のページへのリンク -->
+		<a th:href="@{/productListView(page=${productsPage.number < productsPage.totalPages - 1 ? productsPage.number + 1 : productsPage.number}, sort=${sortOrder})}"
+			th:classappend="${productsPage.last} ? ' disabled'" th:text="'次へ »'"></a>
+		</div>
+
+
+
+
+
+	</main>
+
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<p>&copy; 2025 Example Corp. All rights reserved.</p>
+		</div>
+	</footer>
+
+
+</body>
+
+<script>
+
+</script>
+
+</html>

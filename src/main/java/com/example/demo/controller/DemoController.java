@@ -17,14 +17,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entity.ClosingDayEntity;
 import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.PaymentMethodsEntity;
+import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.service.CustomerService;
+import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.domain.Sort;
 
 @Controller
 public class DemoController {
@@ -33,6 +37,8 @@ public class DemoController {
 	private UserService userService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private ProductService productService;
 
 	@PostMapping("/login")
 
@@ -179,6 +185,7 @@ public class DemoController {
 
 	/**
 	 * メニュー：商品登録」ボタン押下処理
+	 * 
 	 * @param session
 	 * @return
 	 */
@@ -188,6 +195,41 @@ public class DemoController {
 		// 商品登録画面に遷移
 		return "insertProductView";
 	}
+
+	/**
+	 * メニュー：商品一覧ボタン押下処理
+	 * 
+	 * @param session
+	 * @param model
+	 * @return 商品一覧画面のテンプレート名
+	 */
+	@GetMapping("/productListView")
+	public String listProductClick(HttpSession session, Model model,
+			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder,
+			@RequestParam(name = "page", defaultValue = "0") int page) {
+
+		// 商品一覧リストを設定
+		// List<ProductEntity> products = productService.getAllProduct();
+		// model.addAttribute("products", products);
+
+		// ソート条件（商品名で昇順または降順）
+		Sort sort = "desc".equalsIgnoreCase(sortOrder) ? Sort.by("productName").descending()
+				: Sort.by("productName").ascending();
+
+		// ページング＋ソート条件
+		Pageable pageable = PageRequest.of(page, 12, sort);
+
+		// サービス呼び出し（ソート順も渡す）
+		Page<ProductEntity> productsPage = productService.getProductPage(pageable, sortOrder);
+
+		// モデルに渡す
+		model.addAttribute("productsPage", productsPage);
+		model.addAttribute("sortOrder", sortOrder);
+
+		// 商品一覧画面に遷移
+		return "productListView";
+	}
+
 	/**
 	 * 「メニュー：顧客一覧」 削除ボタン押下処理
 	 * 

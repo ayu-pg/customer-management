@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,6 +32,12 @@ public class ProductEntity {
 	/** 通常価格 */
 	@Column(name = "regular_price")
 	private BigDecimal regularPrice;
+	
+	/** 商品サイズマスタ（名称を取得するためのリレーション） */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "size", referencedColumnName = "id", insertable = false, updatable = false)
+	private ProductSizeEntity productSizeEntity;
+
 
 	// getter/setter
 	public Long getId() {
@@ -61,5 +70,13 @@ public class ProductEntity {
 
 	public void setRegularPrice(BigDecimal regularPrice) {
 		this.regularPrice = regularPrice;
+	}
+	
+	public ProductSizeEntity getProductSizeEntity() {
+		return productSizeEntity;
+	}
+
+	public void setClosingDayEntity(ProductSizeEntity productSizeEntity) {
+		this.productSizeEntity = productSizeEntity;
 	}
 }
