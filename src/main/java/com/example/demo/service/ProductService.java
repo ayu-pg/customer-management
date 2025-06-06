@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.repository.ProductRepository;
 
@@ -88,6 +87,15 @@ public class ProductService {
 		}
 
 		return productRepository.findByProductNameContaining(keyword, pageable);
+	}
+
+	/**
+	 * ¤•iˆê——íœˆ—
+	 * 
+	 * @param id
+	 */
+	public void deleteCustomerById(Long id) {
+		productRepository.deleteById(id);
 	}
 
 }

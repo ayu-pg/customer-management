@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ClosingDayEntity;
 import com.example.demo.entity.CustomerEntity;
@@ -184,7 +182,7 @@ public class DemoController {
 	}
 
 	/**
-	 * メニュー：商品登録」ボタン押下処理
+	 * 「メニュー：商品登録」ボタン押下処理
 	 * 
 	 * @param session
 	 * @return
@@ -197,7 +195,7 @@ public class DemoController {
 	}
 
 	/**
-	 * メニュー：商品一覧ボタン押下処理
+	 * 「メニュー：商品一覧ボタン押下処理
 	 * 
 	 * @param session
 	 * @param model
@@ -237,39 +235,6 @@ public class DemoController {
 
 		// 商品一覧画面に遷移
 		return "productListView";
-	}
-
-	/**
-	 * 「メニュー：顧客一覧」 削除ボタン押下処理
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@PostMapping("/deleteCustomer")
-	public String deleteCustomer(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
-		customerService.deleteCustomerById(id);
-
-		// 削除完了メッセージをフラッシュ属性にセット
-		redirectAttributes.addFlashAttribute("deleteMessage", "顧客情報の削除が完了しました。");
-		return "redirect:/customerListView";
-	}
-
-	/**
-	 * 「メニュー：顧客一覧」編集ボタン押下処理
-	 * 
-	 * @param session
-	 * @return
-	 */
-	@GetMapping("/editCustomerView")
-	public String editUserClick(@RequestParam("id") Long id, Model model) {
-		Optional<CustomerEntity> customerOpt = customerService.findById(id);
-		if (customerOpt.isPresent()) {
-			model.addAttribute("customer", customerOpt.get());
-			return "editCustomerView";
-		} else {
-			// IDが見つからなかった場合の処理（エラー画面など）
-			return "redirect:/customerListView"; // 一覧画面に遷移する
-		}
 	}
 
 }

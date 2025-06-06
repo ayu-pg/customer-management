@@ -41,6 +41,11 @@
 
 	<main>
 
+		<!-- 削除完了メッセージ -->
+		<div th:if="${deleteMessage}"
+			style="margin: 10px auto; padding: 10px 0; color: rgb(255, 0, 0); text-align: center; font-weight: bold;">
+			<p th:text="${deleteMessage}" style="margin: 0;"></p>
+		</div>
 
 		<h1>商品検索</h1>
 
@@ -89,9 +94,16 @@
 					<td>
 						<a th:href="@{/productEditView(productId=${product.id})}" class="edit">編集</a>
 					</td>
-					<td>
+
+					<!--<td>
 						<button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
-					</td>
+					</td>-->
+
+					<form th:action="@{/deleteProduct}" method="post" th:object="${product}">
+						<input type="hidden" th:name="id" th:value="${product.id}" />
+						<td><button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+						</td>
+					</form>
 				</tr>
 			</tbody>
 		</table>
