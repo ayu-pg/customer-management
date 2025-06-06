@@ -17,6 +17,8 @@ import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.PaymentMethodsEntity;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.form.CustomersProductForm;
+import com.example.demo.repository.CustomerRepository;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
@@ -37,6 +39,8 @@ public class DemoController {
 	private CustomerService customerService;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private CustomerRepository customerRepository; // これが必要！
 
 	@PostMapping("/login")
 
@@ -188,8 +192,11 @@ public class DemoController {
 	 * @return
 	 */
 	@GetMapping("/insertProductView")
-	public String insertProductClick(HttpSession session) {
+	public String insertProductClick(HttpSession session, Model model) {
 
+		List<CustomerEntity> customers = customerRepository.findAll(); // 顧客テーブルから取得
+		model.addAttribute("customers", customers);
+		model.addAttribute("productForm", new CustomersProductForm()); // フォーム用オブジェクトも渡す
 		// 商品登録画面に遷移
 		return "insertProductView";
 	}

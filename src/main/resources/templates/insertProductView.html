@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>商品登録画面</title>
+	<title>顧客商品登録画面</title>
 	<!-- その他CSSやフォント -->
 	<link rel="stylesheet" href="css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -33,13 +33,13 @@
 				}
 
 				// 通常価格NULLチェック
-				if (regularPrice === "") {
+				if (price === "") {
 					alert('通常価格を入力してください。');
 					hasError = true;
 				}
 
 				// 通常価格数値チェック
-				if (!/^[0-9]+$/.test(regularPrice)) {
+				if (!/^[0-9]+$/.test(price)) {
 					alert('通常価格は半角数字で入力してください。');
 					hasError = true;
 				}
@@ -80,17 +80,25 @@
 	<main>
 
 		<div class="container">
-			<h1>商品登録画面</h1>
+			<h1>顧客商品登録</h1>
 
 			<div class="box">
-				<form action="/product/register" method="post">
+				<form th:action="@{/customerProduct/register}" th:object="${productForm}" method="post">
+
+					<label>会社名</label>
+					<select id="company" th:field="*{customerId}">
+						<option value="" selected>選択してください</option>
+						<option th:each="customer : ${customers}" th:value="${customer.id}"
+							th:text="${customer.companyName}">
+						</option>
+					</select>
 
 					<label for="productName">商品名</label>
 					<input type="text" id="productName" name="productName" maxlength="100" 　required>
 
 					<div>
-						<label for="regularPrice">通常価格</label>
-						<input type="text" id="regularPrice" name="regularPrice" placeholder="" maxlength="" required>
+						<label for="price">単価</label>
+						<input type="text" id="price" name="price" placeholder="" maxlength="" required>
 					</div>
 
 					<label for="size">サイズ</label>
