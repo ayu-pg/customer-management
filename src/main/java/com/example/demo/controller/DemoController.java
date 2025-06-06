@@ -206,7 +206,8 @@ public class DemoController {
 	@GetMapping("/productListView")
 	public String listProductClick(HttpSession session, Model model,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sortOrder,
-			@RequestParam(name = "page", defaultValue = "0") int page) {
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "keyword", required = false) String keyword) {
 
 		// 商品一覧リストを設定
 		// List<ProductEntity> products = productService.getAllProduct();
@@ -220,10 +221,18 @@ public class DemoController {
 		Pageable pageable = PageRequest.of(page, 12, sort);
 
 		// サービス呼び出し（ソート順も渡す）
-		Page<ProductEntity> productsPage = productService.getProductPage(pageable, sortOrder);
+		Page<ProductEntity> productPage = productService.getProductPage(pageable, sortOrder);
+
+		// 商品名検索処理（部分一致）
+		if (keyword != null && !keyword.isEmpty()) {
+			productPage = productService.searchProductByProductName(keyword, pageable, sortOrder);
+			model.addAttribute("keyword", keyword);
+		} else {
+			productPage = productService.getProductPage(pageable, sortOrder);
+		}
 
 		// モデルに渡す
-		model.addAttribute("productsPage", productsPage);
+		model.addAttribute("productPage", productPage);
 		model.addAttribute("sortOrder", sortOrder);
 
 		// 商品一覧画面に遷移

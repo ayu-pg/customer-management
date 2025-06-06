@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.CustomerEntity;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.repository.ProductRepository;
 
@@ -7,7 +8,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,6 +45,17 @@ public class ProductService {
 	}
 
 	/**
+	 * ページング処理
+	 * 
+	 * @param pageable
+	 * @return
+	 */
+
+	public Page<ProductEntity> getProductPage(Pageable pageable) {
+		return productRepository.findAll(pageable);
+	}
+
+	/**
 	 * 商品名の昇順：降順ソート＋ページングを処理
 	 * 
 	 * @param pageable
@@ -54,6 +68,26 @@ public class ProductService {
 		} else {
 			return productRepository.findAllByOrderByProductNameAsc(pageable);
 		}
+	}
+
+	/**
+	 * 商品名検索処理（部分一致）
+	 * 
+	 * @param keyword
+	 * @param pageable
+	 * @param sortOrder
+	 * @return
+	 */
+	public Page<ProductEntity> searchProductByProductName(String keyword, Pageable pageable, String sortOrder) {
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("productName").descending());
+		} else {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("productName").ascending());
+		}
+
+		return productRepository.findByProductNameContaining(keyword, pageable);
 	}
 
 }

@@ -23,4 +23,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	// ページング＋ソート処理
 	Page<ProductEntity> findAllByOrderByProductNameAsc(Pageable pageable);
 	Page<ProductEntity> findAllByOrderByProductNameDesc(Pageable pageable);
+	
+	// 商品名に指定した文字列が部分一致する顧客情報を取得（ページング対応）
+	Page<ProductEntity> findByProductNameContaining(String productName, Pageable pageable);
 }

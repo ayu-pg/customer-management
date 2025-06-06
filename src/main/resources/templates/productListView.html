@@ -57,9 +57,9 @@
 		<h1>商品一覧</h1>
 
 		<p class="pagination-info">
-			全<span th:text="${productsPage.totalElements}">0</span>件中
-			<span th:text="${productsPage.number * productsPage.size + 1}">0</span>〜
-			<span th:text="${productsPage.number * productsPage.size + productsPage.numberOfElements}">0</span>件を表示中
+			全<span th:text="${productPage.totalElements}">0</span>件中
+			<span th:text="${productPage.number * productPage.size + 1}">0</span>〜
+			<span th:text="${productPage.number * productPage.size + productPage.numberOfElements}">0</span>件を表示中
 		</p>
 
 		<table>
@@ -82,7 +82,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="product : ${productsPage}">
+				<tr th:each="product : ${productPage}">
 					<td th:text="${product.productName}">商品名</td>
 					<td th:text="${product.ProductSizeEntity.name}">サイズ</td>
 					<td th:text="${product.regularPrice}">通常価格</td>
@@ -98,18 +98,18 @@
 
 		<div class="pagination">
 			<!-- 前のページへのリンク -->
-			<a th:href="@{/productListView(page=${productsPage.number > 0 ? productsPage.number - 1 : 0}, sort=${sortOrder})}"
-				th:classappend="${productsPage.first} ? ' disabled'" th:text="'« 前へ'"></a>
+			<a th:href="@{/productListView(page=${productPage.number > 0 ? productPage.number - 1 : 0}, sort=${sortOrder})}"
+				th:classappend="${productPage.first} ? ' disabled'" th:text="'« 前へ'"></a>
 			<!-- ページ番号のリンク -->
-			<span th:each="pageNum : ${#numbers.sequence(0, productsPage.totalPages - 1)}">
+			<span th:each="pageNum : ${#numbers.sequence(0, productPage.totalPages - 1)}">
 		    <a th:href="@{/productListView(page=${pageNum}, sort=${sortOrder})}"
 		       th:text="${pageNum + 1}"
-		       th:classappend="${pageNum == productsPage.number} ? ' active'"></a>
+		       th:classappend="${pageNum == productPage.number} ? ' active'"></a>
   			</span>
 
 		<!-- 次のページへのリンク -->
-		<a th:href="@{/productListView(page=${productsPage.number < productsPage.totalPages - 1 ? productsPage.number + 1 : productsPage.number}, sort=${sortOrder})}"
-			th:classappend="${productsPage.last} ? ' disabled'" th:text="'次へ »'"></a>
+		<a th:href="@{/productListView(page=${productPage.number < productPage.totalPages - 1 ? productPage.number + 1 : productPage.number}, sort=${sortOrder})}"
+			th:classappend="${productPage.last} ? ' disabled'" th:text="'次へ »'"></a>
 		</div>
 
 
