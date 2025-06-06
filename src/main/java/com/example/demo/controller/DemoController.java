@@ -14,21 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ClosingDayEntity;
 import com.example.demo.entity.CustomerEntity;
+import com.example.demo.entity.CustomerProductEntity;
 import com.example.demo.entity.PaymentMethodsEntity;
-import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.form.CustomersProductForm;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.service.CustomerProductService;
 import com.example.demo.service.CustomerService;
-import com.example.demo.service.ProductService;
 import com.example.demo.service.UserService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import org.springframework.data.domain.Sort;
 
 @Controller
 public class DemoController {
@@ -38,9 +36,11 @@ public class DemoController {
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
-	private ProductService productService;
+	private CustomerProductService customerproductService;
 	@Autowired
 	private CustomerRepository customerRepository; // これが必要！
+	@Autowired
+	private CustomerProductService productService;
 
 	@PostMapping("/login")
 
@@ -214,32 +214,34 @@ public class DemoController {
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "keyword", required = false) String keyword) {
 
-		// 商品一覧リストを設定
-		// List<ProductEntity> products = productService.getAllProduct();
-		// model.addAttribute("products", products);
+		/*
+		 * // 顧客商品一覧リストを設定 List<CustomerProductEntity> product =
+		 * customerproductService.getAllProduct(); model.addAttribute("product",
+		 * product);
+		 */
 
-		// ソート条件（商品名で昇順または降順）
-		Sort sort = "desc".equalsIgnoreCase(sortOrder) ? Sort.by("productName").descending()
-				: Sort.by("productName").ascending();
+		// ページ情報 + 並び順（10件ずつ）
+		Pageable pageable = PageRequest.of(page, 10);
 
-		// ページング＋ソート条件
-		Pageable pageable = PageRequest.of(page, 12, sort);
+		// 顧客商品をページングで取得（会社名ソート付き）
+		Page<CustomerProductEntity> productPage = customerproductService.getProductPage(pageable, sortOrder);
 
-		// サービス呼び出し（ソート順も渡す）
-		Page<ProductEntity> productPage = productService.getProductPage(pageable, sortOrder);
+		model.addAttribute("productPage", productPage);
+		model.addAttribute("sortOrder", sortOrder);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", productPage.getTotalPages());
 
-		// 商品名検索処理（部分一致）
+		// 会社名検索処理（部分一致）
 		if (keyword != null && !keyword.isEmpty()) {
-			productPage = productService.searchProductByProductName(keyword, pageable, sortOrder);
+			productPage = productService.searchProductByCompanyName(keyword, pageable, sortOrder);
 			model.addAttribute("keyword", keyword);
 		} else {
 			productPage = productService.getProductPage(pageable, sortOrder);
 		}
 
-		// モデルに渡す
 		model.addAttribute("productPage", productPage);
 		model.addAttribute("sortOrder", sortOrder);
-
+		
 		// 商品一覧画面に遷移
 		return "productListView";
 	}

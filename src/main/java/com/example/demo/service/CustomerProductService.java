@@ -4,7 +4,12 @@ import com.example.demo.entity.CustomerProductEntity;
 import com.example.demo.repository.CustomerProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 顧客商品情報サービスクラス
@@ -29,62 +34,61 @@ public class CustomerProductService {
 	}
 
 	/**
-	 * 商品情報一覧リスト取得処理
+	 * 顧客商品情報一覧リスト取得処理
 	 * 
 	 * @return
 	 */
+
 	/*
-	 * public List<ProductEntity> getAllProduct() { return
-	 * productRepository.findAll(); }
+	 * public List<CustomerProductEntity> getAllProduct() { return
+	 * customersProductRepository.findAll(); }
+	 */
+
+	/**
+	 * 顧客情報一覧リストソート順＋ページング処理
 	 * 
-	 *//**
-		 * ページング処理
-		 * 
-		 * @param pageable
-		 * @return
-		 */
-	/*
+	 * @param pageable
+	 * @param sortOrder
+	 * @return
+	 */
+	public Page<CustomerProductEntity> getProductPage(Pageable pageable, String sortOrder) {
+		// ソート順の設定
+		Sort sort = "desc".equalsIgnoreCase(sortOrder) ? Sort.by(Sort.Direction.DESC, "customerEntity.companyName")
+				: Sort.by(Sort.Direction.ASC, "customerEntity.companyName");
+
+		// 既存のページ情報にソート順を追加したPageableを作成
+		Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+		return customersProductRepository.findAll(sortedPageable);
+	}
+
+	/**
+	 * 会社名検索処理（部分一致）
+	 *
+	 * @param keyword   検索キーワード（会社名）
+	 * @param pageable  ページ情報
+	 * @param sortOrder ソート順（asc/desc）
+	 * @return 検索結果のページ
+	 */
+	public Page<CustomerProductEntity> searchProductByCompanyName(String keyword, Pageable pageable, String sortOrder) {
+		if ("desc".equalsIgnoreCase(sortOrder)) {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("customerEntity.companyName").descending());
+		} else {
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("customerEntity.companyName").ascending());
+		}
+
+		return customersProductRepository.findByCustomerEntityCompanyNameContaining(keyword, pageable);
+	}
+
+	/**
+	 * 顧客商品一覧削除処理
 	 * 
-	 * public Page<ProductEntity> getProductPage(Pageable pageable) { return
-	 * productRepository.findAll(pageable); }
-	 * 
-	 *//**
-		 * 商品名の昇順：降順ソート＋ページングを処理
-		 * 
-		 * @param pageable
-		 * @param sortOrder
-		 * @return
-		 */
-	/*
-	 * public Page<ProductEntity> getProductPage(Pageable pageable, String
-	 * sortOrder) { if ("desc".equalsIgnoreCase(sortOrder)) { return
-	 * productRepository.findAllByOrderByProductNameDesc(pageable); } else { return
-	 * productRepository.findAllByOrderByProductNameAsc(pageable); } }
-	 * 
-	 *//**
-		 * 商品名検索処理（部分一致）
-		 * 
-		 * @param keyword
-		 * @param pageable
-		 * @param sortOrder
-		 * @return
-		 */
-	/*
-	 * public Page<ProductEntity> searchProductByProductName(String keyword,
-	 * Pageable pageable, String sortOrder) { if
-	 * ("desc".equalsIgnoreCase(sortOrder)) { pageable =
-	 * PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-	 * Sort.by("productName").descending()); } else { pageable =
-	 * PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-	 * Sort.by("productName").ascending()); }
-	 * 
-	 * return productRepository.findByProductNameContaining(keyword, pageable); }
-	 * 
-	 *//**
-		 * 商品一覧削除処理
-		 * 
-		 * @param id
-		 *//*
-			 * public void deleteCustomerById(Long id) { productRepository.deleteById(id); }
-			 */
+	 * @param id
+	 */
+	public void deleteCustomerById(Long id) {
+		customersProductRepository.deleteById(id);
+	}
+
 }

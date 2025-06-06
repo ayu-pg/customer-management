@@ -40,6 +40,11 @@ public class CustomerProductEntity {
 	@JoinColumn(name = "size", referencedColumnName = "id", insertable = false, updatable = false)
 	private ProductSizeEntity productSizeEntity;
 
+	/** 顧客情報マスタ（名称を取得するためのリレーション） */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private CustomerEntity customerEntity;
+
 	// getter/setter
 	public Long getId() {
 		return id;
@@ -87,5 +92,13 @@ public class CustomerProductEntity {
 
 	public void setClosingDayEntity(ProductSizeEntity productSizeEntity) {
 		this.productSizeEntity = productSizeEntity;
+	}
+
+	public CustomerEntity getCustomerEntity() {
+		return customerEntity;
+	}
+
+	public void setCustomerEntity(CustomerEntity customerEntity) {
+		this.customerEntity = customerEntity;
 	}
 }
