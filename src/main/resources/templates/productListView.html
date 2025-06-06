@@ -95,10 +95,6 @@
 						<a th:href="@{/productEditView(productId=${product.id})}" class="edit">編集</a>
 					</td>
 
-					<!--<td>
-						<button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
-					</td>-->
-
 					<form th:action="@{/deleteProduct}" method="post" th:object="${product}">
 						<input type="hidden" th:name="id" th:value="${product.id}" />
 						<td><button class="delete" type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
