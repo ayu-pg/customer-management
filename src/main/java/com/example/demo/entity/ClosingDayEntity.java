@@ -15,7 +15,7 @@ public class ClosingDayEntity {
 
 	@Id
 	private Integer id;
-
+	/** ’÷‚ß“ú–¼Ì */
 	@Column(name = "name")
 	private String name;
 

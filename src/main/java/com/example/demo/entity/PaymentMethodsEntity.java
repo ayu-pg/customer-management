@@ -15,7 +15,7 @@ public class PaymentMethodsEntity {
 
 	@Id
 	private Integer id;
-
+	/** x•¥•û–@–¼Ì */
 	@Column(name = "name")
 	private String name;
 

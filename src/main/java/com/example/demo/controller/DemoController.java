@@ -178,6 +178,17 @@ public class DemoController {
 	}
 
 	/**
+	 * メニュー：商品登録」ボタン押下処理
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/insertProductView")
+	public String insertProductClick(HttpSession session) {
+
+		// 商品登録画面に遷移
+		return "insertProductView";
+	}
+	/**
 	 * 「メニュー：顧客一覧」 削除ボタン押下処理
 	 * 
 	 * @param id
@@ -193,7 +204,7 @@ public class DemoController {
 	}
 
 	/**
-	 * 「メニュー：顧客登録」編集ボタン押下処理
+	 * 「メニュー：顧客一覧」編集ボタン押下処理
 	 * 
 	 * @param session
 	 * @return

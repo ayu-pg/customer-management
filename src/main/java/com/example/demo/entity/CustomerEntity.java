@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 顧客情報エンティティクラス customersテーブルに対応しています
+ * 顧客情報マスタエンティティクラス customersテーブルに対応しています
  */
 
 @Entity
