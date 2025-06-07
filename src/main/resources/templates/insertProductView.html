@@ -23,22 +23,21 @@
 				let hasError = false;
 
 				const productName = $('#productName').val().trim();
-				const regularPrice = $('#regularPrice').val().trim();
+				const price = $('#price').val().trim();
 
-
-				// 会社名NULLチェック
+				// 商品名NULLチェック
 				if (productName === "") {
 					alert('商品名を入力してください。');
 					hasError = true;
 				}
 
-				// 通常価格NULLチェック
+				// 単価ULLチェック
 				if (price === "") {
 					alert('通常価格を入力してください。');
 					hasError = true;
 				}
 
-				// 通常価格数値チェック
+				// 単価数値チェック
 				if (!/^[0-9]+$/.test(price)) {
 					alert('通常価格は半角数字で入力してください。');
 					hasError = true;
@@ -86,7 +85,7 @@
 				<form th:action="@{/customerProduct/register}" th:object="${productForm}" method="post">
 
 					<label>会社名</label>
-					<select id="company" th:field="*{customerId}">
+					<select id="customer.companyName" name="customer.companyName" 　th:field="*{customerId}">
 						<option value="" selected>選択してください</option>
 						<option th:each="customer : ${customers}" th:value="${customer.id}"
 							th:text="${customer.companyName}">
