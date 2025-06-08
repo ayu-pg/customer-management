@@ -1,25 +1,11 @@
-# ベースイメージ（ビルド用）
+# ビルドステージ
 FROM gradle:8.4-jdk17 AS build
-
-# プロジェクトファイルを全部コピー
-COPY . /home/app
-
-# 作業ディレクトリを指定
-WORKDIR /home/app
-
-# jarファイルをビルド
-RUN gradle build --no-daemon --stacktrace
-
-# ===============================
-
-# 本番用イメージ（軽いOpenJDKだけ）
-FROM openjdk:17-jdk-slim
-
-# 作業ディレクトリ
 WORKDIR /app
+COPY . .
+RUN ./gradlew build --no-daemon
 
-# ビルドしたjarファイルをコピー（↑のbuildステージから）
-COPY --from=build /home/app/build/libs/demo-0.0.1-SNAPSHOT.jar app.jar
-
-# アプリ起動
+# 実行ステージ
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
