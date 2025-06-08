@@ -8,7 +8,7 @@ COPY . /home/app
 WORKDIR /home/app
 
 # jarファイルをビルド
-RUN gradle build --no-daemon
+RUN gradle build --no-daemon --stacktrace
 
 # ===============================
 
