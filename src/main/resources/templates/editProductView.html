@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>顧客商品登録画面</title>
+	<title>顧客商品編集画面</title>
 	<!-- その他CSSやフォント -->
 	<link rel="stylesheet" href="css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -16,7 +16,7 @@
 	<script>
 
 		$(function () {
-			$('#tourokuClick').click(function (e) {
+			$('#koushinClick').click(function (e) {
 				// エラーをまとめて表示したいならここでクリア
 				$('.error-message').remove();
 
@@ -79,30 +79,29 @@
 	<main>
 
 		<div class="container">
-			<h1>顧客商品登録</h1>
+			<h1>顧客商品編集</h1>
 
 			<div class="box">
-				<form th:action="@{/customerProduct/register}" th:object="${productForm}" method="post">
+				<form action="/updateProduct" method="post" th:object="${productForm}">
 
+					<input type="hidden" th:field="*{id}" />
 					<label>会社名</label>
-					<select id="customer.companyName" name="customer.companyName" 　th:field="*{customerId}">
-						<option value="" selected　disabled>選択してください</option>
+					<select id="customerId" name="customerId" th:field="*{customerId}">
+						<option value="" disabled>選択してください</option>
 						<option th:each="customer : ${customers}" th:value="${customer.id}"
 							th:text="${customer.companyName}">
 						</option>
 					</select>
 
 					<label for="productName">商品名</label>
-					<input type="text" id="productName" name="productName" maxlength="100" 　required>
+					<input type="text" id="productName" th:field="*{productName}" maxlength="100" required>
 
-					<div>
-						<label for="price">単価</label>
-						<input type="text" id="price" name="price" placeholder="" maxlength="" required>
-					</div>
+					<label for="price">単価</label>
+					<input type="text" id="price" th:field="*{price}" required>
 
 					<label for="size">サイズ</label>
-					<select id="size" name="size">
-						<option value="0"> </option>
+					<select id="size" th:field="*{size}">
+						<option value="0"></option>
 						<option value="1">S</option>
 						<option value="2">M</option>
 						<option value="3">L</option>
@@ -116,9 +115,7 @@
 						<option value="11">幅広4L</option>
 					</select>
 
-					<div>
-						<input type="submit" id="tourokuClick" class="touroku-button" value="登録">
-					</div>
+					<input type="submit" id="koushinClick" class="touroku-button" value="更新">
 
 				</form>
 

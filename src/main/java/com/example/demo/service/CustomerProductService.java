@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.entity.CustomerProductEntity;
 import com.example.demo.repository.CustomerProductRepository;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -89,6 +91,16 @@ public class CustomerProductService {
 	 */
 	public void deleteCustomerById(Long id) {
 		customersProductRepository.deleteById(id);
+	}
+
+	/**
+	 * å⁄ãqè§ïiàÍóóï“èWèàóù
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Optional<CustomerProductEntity> findById(Long id) {
+		return customersProductRepository.findById(id);
 	}
 
 }

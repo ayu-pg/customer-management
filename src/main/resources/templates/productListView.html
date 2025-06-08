@@ -46,6 +46,11 @@
 			style="margin: 10px auto; padding: 10px 0; color: rgb(255, 0, 0); text-align: center; font-weight: bold;">
 			<p th:text="${deleteMessage}" style="margin: 0;"></p>
 		</div>
+		<!-- 更新完了メッセージ -->
+		<div th:if="${successMessage}"
+			style="margin: 10px auto; padding: 10px 0; color: #007bff; text-align: center; font-weight: bold;">
+			<p th:text="${successMessage}" style="margin: 0;"></p>
+		</div>
 
 		<h1>顧客検索</h1>
 
@@ -95,7 +100,7 @@
 					<td th:text="${product.ProductSizeEntity.name}">サイズ</td>
 					<td th:text="${product.price}">通常価格</td>
 					<td>
-						<a th:href="@{/productEditView(productId=${product.id})}" class="edit">編集</a>
+						<a th:href="@{/editProductView(id=${product.id})}" class="edit">編集</a>
 					</td>
 
 					<form th:action="@{/deleteProduct}" method="post" th:object="${product}">

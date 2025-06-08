@@ -99,14 +99,24 @@ public class CustomerService {
 	public void deleteCustomerById(Long id) {
 		customerRepository.deleteById(id);
 	}
-	
+
 	/**
-	 *  顧客一覧編集遷移処理
+	 * 顧客一覧編集処理
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public Optional<CustomerEntity> findById(Long id) {
-	    return customerRepository.findById(id);
+		return customerRepository.findById(id);
+	}
+
+	/**
+	 * 商品一覧編集処理で使用
+	 * 
+	 * @return
+	 */
+	public List<CustomerEntity> findAll() {
+		return customerRepository.findAll();
 	}
 
 }

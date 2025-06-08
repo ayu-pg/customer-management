@@ -2,11 +2,15 @@ package com.example.demo.form;
 
 /**
  * 商品登録フォームのデータを保持するクラス
+ * 
  * @author mikek
  *
  */
 
 public class CustomersProductForm {
+
+	/** 商品ID（編集時に必要） */
+	private Long id;
 
 	/** 顧客ID */
 	private Long customerId;
@@ -18,6 +22,15 @@ public class CustomersProductForm {
 	private Integer price;
 
 	// getter, setter
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getCustomerId() {
 		return customerId;
 	}
