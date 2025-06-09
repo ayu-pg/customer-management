@@ -45,6 +45,17 @@ public class DemoController {
 	@PostMapping("/login")
 
 	/**
+	 * 公開URL用の初期画面アクセスリダイレクト
+	 * 
+	 * @return
+	 */
+	@GetMapping("/")
+	public String rootRedirect() {
+		// "/" にアクセスがあったらログイン画面にリダイレクト
+		return "redirect:/loginView";
+	}
+
+	/**
 	 * ログイン認証処理
 	 * 
 	 * @param userId
@@ -241,7 +252,7 @@ public class DemoController {
 
 		model.addAttribute("productPage", productPage);
 		model.addAttribute("sortOrder", sortOrder);
-		
+
 		// 商品一覧画面に遷移
 		return "productListView";
 	}
