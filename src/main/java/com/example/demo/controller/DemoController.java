@@ -42,8 +42,6 @@ public class DemoController {
 	@Autowired
 	private CustomerProductService productService;
 
-	@PostMapping("/login")
-
 	/**
 	 * 公開URL用の初期画面アクセスリダイレクト
 	 * 
@@ -51,7 +49,6 @@ public class DemoController {
 	 */
 	@GetMapping("/")
 	public String rootRedirect() {
-		// "/" にアクセスがあったらログイン画面にリダイレクト
 		return "redirect:/loginView";
 	}
 
@@ -63,6 +60,7 @@ public class DemoController {
 	 * @param model
 	 * @return
 	 */
+	@PostMapping("/login")
 	public String login(@RequestParam("userid") String userId, @RequestParam("password") String password, Model model,
 			HttpSession session) {
 
